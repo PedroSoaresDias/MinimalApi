@@ -78,10 +78,19 @@ public class Startup
             });
         });
 
-
         services.AddDbContext<DbContexto>(options =>
         {
             options.UseMySql(Configuration.GetConnectionString("MySql"), ServerVersion.AutoDetect(Configuration.GetConnectionString("MySql")));
+        });
+
+        services.AddCors(options => 
+        {
+            options.AddDefaultPolicy(builder =>
+            {
+                builder.AllowAnyOrigin()
+                .AllowAnyMethod()
+                .AllowAnyHeader();
+            });
         });
     }
 
@@ -94,6 +103,8 @@ public class Startup
 
         app.UseAuthentication();
         app.UseAuthorization();
+
+        app.UseCors();
 
         app.UseEndpoints(endpoints =>
         {
